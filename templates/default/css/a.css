@@ -1,17 +1,13 @@
 
 
 .tabs {
-  left: 47%;
-  -webkit-transform: translateX(-50%);
-         
   position: relative;
-
-  padding: 50px;
+  padding: 50px 10px;
   padding-bottom: 80px;
-  width: 110%;
-  height: 220px;
- 
+  width: 90%;
+  height: 180px;
   min-width: 240px;
+  margin: 0 auto;
 }
 .tabs input[name="tab-control"] {
   display: none;
@@ -257,9 +253,12 @@
     display: initial;
   }
   .tabs .content {
-    margin-top: 20px;
+    margin-top: -35px;
   }
   .tabs .content section h2 {
     display: block;
+  }
+  .mt-185 {
+    margin-top: 185px;
   }
 }

@@ -34,10 +34,10 @@ h3, .h3, .widget-title {
 }
 /****************** HEADERS ******************/
 header, header * {
-    
+
 }
 .navbar-header {
-   
+
 }
 .navbar-brand,
 .fixed .navbar-brand {
@@ -366,25 +366,23 @@ label small {
 	padding:8px 45px;
 }
 
- 
+
 
 #search-home-wrapper {
-    position: absolute;
-     
+    position: relative;
     top: 160px;
-    width: 112%;
-	left:-6%;
-
+    width: 100%;
 }
 @media (max-width: 991px) {
     #search-home-wrapper {
         bottom: -5%;
         top: 22%;
-        
+
     }
 }
 #search-home {
-    padding: 14px 68px;
+    position: relative;
+    padding: 14px;
     border-radius: 22px;
 }
 @media (max-width: 991px) {
@@ -398,17 +396,16 @@ label small {
     background-color:#fff;
     top: -45px;
     width: 45%;
-	left:29%;
-	box-shadow: 5px 10px 18px #9b9a9a;
+    left:29%;
+    box-shadow: 5px 10px 18px #9b9a9a;
 	 border-radius: 22px;
 }
 @media (max-width: 991px) {
     #search-home1-wrapper {
-        bottom: 100%;
-        top: auto;
-		width:95%;
-		left:5.5%;
-        
+      bottom: 100%;
+      top: auto;
+      width:95%;
+      left:5.5%;
     }
 }
 @media (max-width: 991px) {
@@ -428,21 +425,18 @@ label small {
 
 
 #search-home2-wrapper {
-    position: absolute;
-   background: #076585;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to top, #77aec1, #fff);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to top, #77aec1, #fff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-    top: 455px;
+  position: relative;
+  background: #076585;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #77aec1, #fff);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #77aec1, #fff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  top: 195px;
 	border-radius: 20px;
 	width:80%;
 	left:10%;
 }
 @media (max-width: 991px) {
     #search-home2-wrapper {
-        bottom: -18%;
-        top: auto;
-        
+        top: 10px;
     }
 }
 #search-home2 {
@@ -504,21 +498,17 @@ background: linear-gradient(to top, #77aec1, #fff); /* W3C, IE 10+/ Edge, Firefo
     }
 }
 
-
 .scon {
-    
-   height:558px
+   height:200px
 }
 @media (max-width: 991) {
     .scon {
-height:885;
-        
+      height:885;
     }
 }
 @media (max-width: 700px) {
     .scon {
-height:920px;
-        
+      height:920px;
     }
 }
 
@@ -672,7 +662,7 @@ aside h4 {
 	color:#ffffff;
 	font-family:Arial;
 	font-size:17px;
-	padding:13px 49px;
+	padding:13px 20px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
 }
