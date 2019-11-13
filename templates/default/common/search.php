@@ -7,15 +7,15 @@ $max_rooms_search = 4;
 
 if(!isset($_SESSION['destination_id'])) $_SESSION['destination_id'] = 0;
 if(!isset($destination_name)) $destination_name = '';
-    
+
 if(!isset($_SESSION['num_adults']))
     $_SESSION['num_adults'] = (isset($_SESSION['book']['adults'])) ? $_SESSION['book']['adults'] : 1;
 if(!isset($_SESSION['num_children']))
     $_SESSION['num_children'] = (isset($_SESSION['book']['children'])) ? $_SESSION['book']['children'] : 0;
-    
+
     if(!isset($_SESSION['num_rooms']))
     $_SESSION['num_rooms'] = (isset($_SESSION['book']['room'])) ? $_SESSION['book']['rooms'] : 0;
-    
+
 $from_date = (isset($_SESSION['from_date'])) ? $_SESSION['from_date'] : '';
 $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
 <style>#myUL{
@@ -41,7 +41,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
         <?php
     } ?>
     <div class="row">
-        
+
 
 
         <?php
@@ -69,8 +69,8 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                                         if($selectd !=''){
                                             $selecteda=$selectd;
                                         }
-                                    } 
-                                  
+                                    }
+
                                     ?>
                             <input type="text" class="form-control" id="myInput" value="<?php echo $selecteda; ?>" onkeyup="myFunction()" placeholder="CITY / AREA " title="Type in a name"   autocomplete="off" >
 
@@ -86,15 +86,15 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                                 </select>
                                 <?php
                             } ?>
-                        </div> 
+                        </div>
                     </div>
                     <ul id="myUL">
-<?php 
+<?php
                                     foreach($result_search_destination as $row){
-                                       
+
                                         echo '<li onclick="setdestination('.$row['id'].')"><a id="a'.$row['id'].'">'.$row['name'].'</a></li>';
                                     } ?>
-  
+
 </ul>
                 </div>
                 <?php
@@ -117,7 +117,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon"><?php echo $texts['ADULTS']; ?></div>
-					
+
                     <select name="num_adults" class="selectpicker form-control">
                         <?php
                         for($i = 1; $i <= $max_adults_search; $i++){
@@ -128,10 +128,11 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                 </div>
             </div>
         </div>
+        <?php if($_SERVER['REQUEST_URI'] !== '/') { ?>
         <div class="col-md-2 col-sm-6 col-xs-6">
             <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-addon">Rooms</div>
+                    <div class="input-group-addon">Rooms <?php echo $_SERVER['REQUEST_URI']; ?></div>
                     <select name="num_children" class="selectpicker form-control">
                         <?php
                         for($i = 0; $i <= $max_rooms_search; $i++){
@@ -142,6 +143,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                 </div>
             </div>
         </div>
+      <?php } ?>
         <div class="col-md-1 col-sm-12 col-xs-12">
             <div class="form-group">
                 <button class="myButton" type="submit" name="check_availabilities">Search..</button>
@@ -191,14 +193,14 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
 function myFunction() {
     var input, filter, ul, li, a, i, txtValue,myUL;
     input = document.getElementById("myInput");
-   
+
         myUL = document.getElementById("myInput");
 
     filter = input.value.toUpperCase();
-     
+
     if(filter.length > 0){
-       
-        document.getElementById("myUL").style.display = 'block';    
+
+        document.getElementById("myUL").style.display = 'block';
     ul = document.getElementById("myUL");
     li = ul.getElementsByTagName("li");
     for (i = 0; i < li.length; i++) {
@@ -211,16 +213,16 @@ function myFunction() {
         }
     }
 }else {
-    document.getElementById("myUL").style.display = 'none';   
+    document.getElementById("myUL").style.display = 'none';
 }
-    
-    
+
+
 }
 
 function  setdestination(v){
     document.getElementById("myUL").style.display = 'none';
     document.getElementById("myInput").value = document.getElementById("a"+v).innerHTML;
     document.getElementById("destination_id").value = v;
- 
+
 }
 </script>
