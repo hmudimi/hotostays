@@ -15,13 +15,11 @@ if(!isset($_SESSION['num_children']))
 
     if(!isset($_SESSION['num_rooms']))
     $_SESSION['num_rooms'] = (isset($_SESSION['book']['room'])) ? $_SESSION['book']['rooms'] : 0;
-
-    if($_POST['num_adults']) $_SESSION['num_adults'] = (int) $_POST['num_adults'];
-    if($_POST['num_children']) $_SESSION['num_children'] = (int)$_POST['num_children'];
+    if(isset($_POST['num_adults'])) $_SESSION['num_adults'] = (int) preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['num_adults']);
+    if(isset($_POST['num_children'])) $_SESSION['num_children'] = (int) preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['num_children']);
 
 $from_date = (isset($_SESSION['from_date'])) ? $_SESSION['from_date'] : '';
 $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
-<?php var_dump($_SESSION); ?>
 <style>#myUL{
     display:none;
     margin-top: 2px;
@@ -116,7 +114,6 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon"><?php echo $texts['ADULTS']; ?></div>
-                    <?php echo $_SESSION['num_adults']; ?>
                     <select name="num_adults" class="selectpicker form-control">
                     <option value="" disabled>Select Adults</option>
                         <?php
