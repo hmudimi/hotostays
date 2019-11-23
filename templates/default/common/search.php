@@ -134,7 +134,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                     <option value="" disabled>Select Childrens</option>
                         <?php
                         for($i = 0; $i <= $max_rooms_search; $i++){
-                            $select = ($_SESSION['num_rooms'] == $i) ? ' selected=\"selected\"' : '';
+                            $select = ($_SESSION['num_children'] == $i) ? ' selected=\"selected\"' : '';
                             echo '<option value=\"'.$i.'\"'.$select.'>'.$i.'</option>';
                         } ?>
                     </select>
