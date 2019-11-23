@@ -82,7 +82,6 @@ $num_people = $_SESSION['num_adults']+$_SESSION['num_children'];
 
 if(!is_numeric($_SESSION['num_adults'])) $field_notice['num_adults'] = $texts['REQUIRED_FIELD'];
 if(!is_numeric($_SESSION['num_children'])) $field_notice['num_children'] = $texts['REQUIRED_FIELD'];
-var_dump($_SESSION['from_date']);
 if($_SESSION['from_date'] == '') $field_notice['dates'] = $texts['REQUIRED_FIELD'];
 else{
     $time = explode('/', $_SESSION['from_date']);
@@ -128,12 +127,9 @@ if(count($field_notice) == 0){
 }
 
 
-
-$id_room = 0;
-
+$id_room = $_SESSION['num_adults'] ? $_SESSION['num_adults']/2 : 0;
 $result_room_rate = $db->prepare('SELECT MIN(price) as min_price FROM pm_rate WHERE id_room = :id_room');
 $result_room_rate->bindParam(':id_room', $id_room);
-
 $id_hotel = 0;
 
 $result_budget_room = $db->prepare('SELECT * FROM pm_room WHERE id_hotel = :id_hotel AND checked = 1  AND  lang = '.LANG_ID);
@@ -152,14 +148,12 @@ if($result_budget_hotel !== false){
         $result_budget_room->execute();
         if($result_budget_room !== false){
             foreach($result_budget_room as $row){
-                
                 $id_room = $row['id'];
                 $room_price = $row['price'];
                 $max_people = $row['max_people'];
                 $min_people = $row['min_people'];
                 $max_adults = $row['max_adults'];
                 $max_children = $row['max_children'];
-                
                 if(!isset($res_hotel[$id_hotel][$id_room])
                 || isset($res_hotel[$id_hotel][$id_room]['error'])
                 || ($_SESSION['num_adults']+$_SESSION['num_children'] > $max_people)
@@ -381,6 +375,7 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                              
 
                             <?php
+                            var_dump($result_room);
                             foreach($result_room as $i => $row){
                                 $id_room = $row['id'];
                                 $room_title = $row['title'];
@@ -633,15 +628,15 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                                                                 </div>
                                                                 <div class="mb10 text-muted"><?php echo $texts['PRICE'].' / '.$type; ?></div>
                                                                 <?php echo $texts['CAPACITY']; ?> : <i class="fas fa-fw fa-male"></i>x<?php echo $max_people; ?>
-                                                                <?php // if($max_people > 0) $room_stock = $max_adults/$max_people; ?>
+                                                                <?php if($_SESSION['num_adults'] > 0) $id_room = $_SESSION['num_adults'] / $max_people; ?>
                                                                 <?php
                                                                 if($room_stock > 0){ ?>
                                                                     <div class="pt10 form-inline">
-                                                                        <i class="fas fa-fw fa-tags"></i> Rooms <?php echo $room_stock;?>&nbsp;
+                                                                        <i class="fas fa-fw fa-tags"></i> Rooms &nbsp;
                                                                         <select name="num_rooms[<?php echo $id_room; ?>]" class="form-control btn-group-sm sendAjaxForm selectpicker" width="50%" data-target="#room-options-<?php echo $id_room; ?>" data-extratarget="#booking-amount_<?php echo $id_hotel; ?>" data-action="<?php echo getFromTemplate('common/change_num_rooms.php'); ?>?room=<?php echo $id_room; ?>">
                                                                             <?php
                                                                             for($i = 0; $i <= $room_stock; $i++){ ?>
-                                                                                <?php if((int)$id_room == $i) {?>
+                                                                                <?php if($id_room == $i) {?>
                                                                                 <option value="<?php echo $i; ?>" selected><?php echo $i;?></option>
                                                                                 <?php } else {?>
                                                                                     <option value="<?php echo $i; ?>"><?php echo $i;?></option>
@@ -820,7 +815,6 @@ $result_room->bindParam(':id_hotel', $id_hotel);
 <script>
     $(function(){
         $('.room-options').on('change', '[name^="num_children"]', function(){
-             console.log('trig');
             var extraTarget = $(this).parents('.booking-result').find('[id^="booking-amount_"]').attr('id');
             console.log(extraTarget);
             var attr = $(this).attr('name').match(/\[(\d+)\]\[(\d+)\]/);

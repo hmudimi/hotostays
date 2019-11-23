@@ -61,4 +61,4 @@ if(isset($db) && $db !== false){
         }
     }
 }
-echo json_encode($response);
+// echo json_encode($response);
