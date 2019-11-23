@@ -10,7 +10,7 @@ $response = array("html" => "", "notices" => array(), "error" => "", "success" =
 $user = htmlentities($_POST['user'], ENT_COMPAT, "UTF-8");
 $password = $_POST['pass'];
         
-$result_user = $db->query("SELECT * FROM pm_user WHERE (login = ".$db->quote($user)." OR email = ".$db->quote($user).") AND pass = '".md5($password)."' AND checked = 1");
+$result_user = $db->query("SELECT * FROM pm_user WHERE (login = ".$db->quote($user)." OR email = ".$db->quote($user).") AND pass = '".$password."' AND checked = 1");
 if($result_user !== false && $db->last_row_count() > 0){
     $row = $result_user->fetch();
     $_SESSION['user']['id'] = $row['id'];

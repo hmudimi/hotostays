@@ -1,10 +1,10 @@
 <?php
 debug_backtrace() || die ('Direct access not permitted');
+if(isset($_SESSION['user']) && $_GET['action'] == 'logout') unset($_SESSION['user']);
 
 $max_adults_search = 30;
 $max_children_search = 10;
 $max_rooms_search = 4;
-
 if(!isset($_SESSION['destination_id'])) $_SESSION['destination_id'] = 0;
 if(!isset($destination_name)) $destination_name = '';
 
@@ -16,8 +16,12 @@ if(!isset($_SESSION['num_children']))
     if(!isset($_SESSION['num_rooms']))
     $_SESSION['num_rooms'] = (isset($_SESSION['book']['room'])) ? $_SESSION['book']['rooms'] : 0;
 
+    if($_POST['num_adults']) $_SESSION['num_adults'] = (int) $_POST['num_adults'];
+    if($_POST['num_children']) $_SESSION['num_children'] = (int)$_POST['num_children'];
+
 $from_date = (isset($_SESSION['from_date'])) ? $_SESSION['from_date'] : '';
 $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
+<?php var_dump($_SESSION); ?>
 <style>#myUL{
     display:none;
     margin-top: 2px;
@@ -63,19 +67,15 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                                 <?php
                             }else{ ?>
                             <?php
-                            $select='';
+                            $selecteda='';
                                     foreach($result_search_destination as $row){
                                         $selectd = (isset($_SESSION['destination_id']) && $_SESSION['destination_id'] == $row['id']) ? $row['name'] : '';
                                         if($selectd !=''){
                                             $selecteda=$selectd;
                                         }
                                     }
-
                                     ?>
                             <input type="text" class="form-control" id="myInput" value="<?php echo $selecteda; ?>" onkeyup="myFunction()" placeholder="CITY / AREA " title="Type in a name"   autocomplete="off" >
-
-
-
                                 <select name="destination_id" id="destination_id" class="form-control " style="display:none">
                                     <option value="0"><?php echo $texts['DESTINATION']; ?></option>
                                     <?php
@@ -89,11 +89,10 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                         </div>
                     </div>
                     <ul id="myUL">
-<?php
-                                    foreach($result_search_destination as $row){
-
-                                        echo '<li onclick="setdestination('.$row['id'].')"><a id="a'.$row['id'].'">'.$row['name'].'</a></li>';
-                                    } ?>
+<?php 
+                        foreach($result_search_destination as $row){
+                            echo '<li onclick="setdestination('.$row['id'].')"><a id="a'.$row['id'].'">'.$row['name'].'</a></li>';
+                        } ?>
 
 </ul>
                 </div>
@@ -117,8 +116,9 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon"><?php echo $texts['ADULTS']; ?></div>
-
+                    <?php echo $_SESSION['num_adults']; ?>
                     <select name="num_adults" class="selectpicker form-control">
+                    <option value="" disabled>Select Adults</option>
                         <?php
                         for($i = 1; $i <= $max_adults_search; $i++){
                             $select = ($_SESSION['num_adults'] == $i) ? ' selected=\"selected\"' : '';
@@ -128,22 +128,23 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                 </div>
             </div>
         </div>
-        <?php if($_SERVER['REQUEST_URI'] !== '/') { ?>
+        <?php // if(strpos($_SERVER['REQUEST_URI'], 'hotels') !== 1) { ?>
         <div class="col-md-2 col-sm-6 col-xs-6">
             <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-addon">Rooms <?php echo $_SERVER['REQUEST_URI']; ?></div>
+                    <div class="input-group-addon"><?php echo $texts['CHILDREN']; ?></div>
                     <select name="num_children" class="selectpicker form-control">
+                    <option value="" disabled>Select Childrens</option>
                         <?php
                         for($i = 0; $i <= $max_rooms_search; $i++){
                             $select = ($_SESSION['num_rooms'] == $i) ? ' selected=\"selected\"' : '';
                             echo '<option value=\"'.$i.'\"'.$select.'>'.$i.'</option>';
                         } ?>
                     </select>
-                </div>
+                    </div>
             </div>
         </div>
-      <?php } ?>
+      <?php // } ?>
         <div class="col-md-1 col-sm-12 col-xs-12">
             <div class="form-group">
                 <button class="myButton" type="submit" name="check_availabilities">Search..</button>
@@ -223,6 +224,8 @@ function  setdestination(v){
     document.getElementById("myUL").style.display = 'none';
     document.getElementById("myInput").value = document.getElementById("a"+v).innerHTML;
     document.getElementById("destination_id").value = v;
-
+}
+function selCity(){
+    document.getElementById("destination_id").style.display = "block";
 }
 </script>

@@ -666,6 +666,7 @@ aside h4 {
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
 }
+
 .myButton:hover {
 	background:linear-gradient(to bottom, #076585 5%, #fff 100%);
 	background-color:#e05edc;
@@ -674,7 +675,6 @@ aside h4 {
 	position:relative;
 	top:1px;
 }
-
 
 .myButton1 {
 		background:linear-gradient(to bottom, #fff 5%, #076585 100%);
@@ -933,4 +933,10 @@ input.slider-target {
 }
 #booking-cart .img-container {
     margin-right: 15px;
+}
+
+
+.l-10 {
+    position: relative;
+    left: 15px;
 }

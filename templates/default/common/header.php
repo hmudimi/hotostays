@@ -205,7 +205,7 @@ if(ENABLE_COOKIES_NOTICE == 1 && !isset($_COOKIE['cookies_enabled'])){ ?>
                     
                     $top_nav_id = get_top_nav_id($menus['main']);
                     foreach($menus['main'] as $nav_id => $nav){
-                        if(empty($nav['id_parent']) || @$menus['main'][$nav['id_parent']]['id_item'] == $homepage['id']){ ?>
+                        if((empty($nav['id_parent']) || @$menus['main'][$nav['id_parent']]['id_item'] == $homepage['id']) && ($_SERVER['REQUEST_URI'] !== '/')){ ?>
                             <li class="primary nav-<?php echo $nav_id; ?>">
                                 <?php
                                 if($nav['item_type'] == "page" && $pages[$nav['id_item']]['home'] == 1){ ?>

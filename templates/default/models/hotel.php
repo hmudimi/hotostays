@@ -1,3 +1,18 @@
+<style type="text/css">
+.razorpay-payment-button {
+    border-width: 1px;
+    border-style: solid;
+    text-transform: uppercase;
+    border-radius: 0;
+    background: none;
+    border-color: #000;
+    color: #000;
+    padding: 5px;
+}
+.razorpay-payment-button:hover{
+    transition: all 0.3s;
+}
+</style>
 <?php
 
 if($article_alias == '') err404();
@@ -67,7 +82,7 @@ $num_people = $_SESSION['num_adults']+$_SESSION['num_children'];
 
 if(!is_numeric($_SESSION['num_adults'])) $field_notice['num_adults'] = $texts['REQUIRED_FIELD'];
 if(!is_numeric($_SESSION['num_children'])) $field_notice['num_children'] = $texts['REQUIRED_FIELD'];
-
+var_dump($_SESSION['from_date']);
 if($_SESSION['from_date'] == '') $field_notice['dates'] = $texts['REQUIRED_FIELD'];
 else{
     $time = explode('/', $_SESSION['from_date']);
@@ -99,7 +114,7 @@ if(is_numeric($from_time) && is_numeric($to_time)){
 
 $hotel_ids = array();
 $room_ids = array();
-
+$msg_error = null;
 if(count($field_notice) == 0){
 
     if($num_nights <= 0) $msg_error .= $texts['NO_AVAILABILITY'];
@@ -618,15 +633,19 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                                                                 </div>
                                                                 <div class="mb10 text-muted"><?php echo $texts['PRICE'].' / '.$type; ?></div>
                                                                 <?php echo $texts['CAPACITY']; ?> : <i class="fas fa-fw fa-male"></i>x<?php echo $max_people; ?>
-                                                                
+                                                                <?php // if($max_people > 0) $room_stock = $max_adults/$max_people; ?>
                                                                 <?php
                                                                 if($room_stock > 0){ ?>
                                                                     <div class="pt10 form-inline">
-                                                                        <i class="fas fa-fw fa-tags"></i> <?php echo $texts['SELECT_ROOMS']; ?> &nbsp;
+                                                                        <i class="fas fa-fw fa-tags"></i> Rooms <?php echo $room_stock;?>&nbsp;
                                                                         <select name="num_rooms[<?php echo $id_room; ?>]" class="form-control btn-group-sm sendAjaxForm selectpicker" width="50%" data-target="#room-options-<?php echo $id_room; ?>" data-extratarget="#booking-amount_<?php echo $id_hotel; ?>" data-action="<?php echo getFromTemplate('common/change_num_rooms.php'); ?>?room=<?php echo $id_room; ?>">
                                                                             <?php
                                                                             for($i = 0; $i <= $room_stock; $i++){ ?>
-                                                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                                                <?php if((int)$id_room == $i) {?>
+                                                                                <option value="<?php echo $i; ?>" selected><?php echo $i;?></option>
+                                                                                <?php } else {?>
+                                                                                    <option value="<?php echo $i; ?>"><?php echo $i;?></option>
+                                                                                <?php } ?>
                                                                                 <?php
                                                                             } ?>
                                                                         </select>
@@ -645,7 +664,26 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                                                                     </a>
                                                                 </p>
                                                             </div>
-                                                           
+                                                            <div class="col-xs-12 text-center">
+                                                            <form action="https://www.example.com/payment/success/" method="POST">
+                                                                <script    src="https://checkout.razorpay.com/v1/checkout.js"    
+                                                                data-key="rzp_test_sPF290XaUW76zA" // Enter the Test API Key ID generated from Dashboard → Settings → API Keys    
+                                                                data-amount="29935" // Amount is in currency subunits. 
+                                                                Default currency is INR. Hence, 29935 refers to 29935 paise or INR 299.35.    
+                                                                data-currency="INR"//You can accept international payments by changing the currency code. 
+                                                                Contact our Support Team to enable International for your account    
+                                                                data-order_id="order_CgmcjRh9ti2lP7"//Replace with the order_id generated by you in the backend.    
+                                                                data-buttontext="Make payment"    
+                                                                data-name="Acme Corp"    
+                                                                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"    
+                                                                data-image="https://example.com/your_logo.jpg"    
+                                                                data-prefill.name="Gaurav Kumar"    
+                                                                data-prefill.email="gaurav.kumar@example.com"    
+                                                                data-theme.color="#F37254">
+                                                                </script>
+                                                                <input type="hidden" custom="Hidden Element" name="hidden">
+                                                            </form>
+                                                            </div>
                                                             <div class="clearfix"></div>
                                                             <div id="room-options-<?php echo $id_room; ?>" class="room-options"></div>
                                                         </div>

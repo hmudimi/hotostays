@@ -59,7 +59,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                                 <?php
                             }else{ ?>
                             <?php
-                            $select='';
+                            $selecteda='';
                                     foreach($result_search_destination as $row){
                                         $selectd = (isset($_SESSION['destination_id']) && $_SESSION['destination_id'] == $row['id']) ? $row['name'] : '';
                                         if($selectd !=''){
