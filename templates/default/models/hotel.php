@@ -628,7 +628,7 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                                                                 </div>
                                                                 <div class="mb10 text-muted"><?php echo $texts['PRICE'].' / '.$type; ?></div>
                                                                 <?php echo $texts['CAPACITY']; ?> : <i class="fas fa-fw fa-male"></i>x<?php echo $max_people; ?>
-                                                                <?php if($_SESSION['num_adults'] > 0) $id_room = $_SESSION['num_adults'] / $max_people; ?>
+                                                                <?php if($_SESSION['num_adults'] > 0) echo $id_room = round($_SESSION['num_adults'] / $max_people); ?>
                                                                 <?php
                                                                 if($room_stock > 0){ ?>
                                                                     <div class="pt10 form-inline">
@@ -687,7 +687,7 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                                                     }
                                                 } ?>
 
-                                                                              <div class="row mb10">
+                    <div class="row mb10">
                         <div class="col-md-12" itemprop="description">
                             <?php
                             echo $hotel['descr'];
@@ -697,8 +697,9 @@ $result_room->bindParam(':id_hotel', $id_hotel);
                   
                         </div>
                     </div>
-                             
-
+                    <?php // include (getFromTemplate('common/get_activities.php')); 
+                                include (getFromTemplate('common/change_num_rooms.php'));
+                                ?>
 
                                             </div>
                                         </div>

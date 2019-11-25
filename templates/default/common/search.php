@@ -12,12 +12,10 @@ if(!isset($_SESSION['num_adults']))
     $_SESSION['num_adults'] = (isset($_SESSION['book']['adults'])) ? $_SESSION['book']['adults'] : 1;
 if(!isset($_SESSION['num_children']))
     $_SESSION['num_children'] = (isset($_SESSION['book']['children'])) ? $_SESSION['book']['children'] : 0;
-
     if(!isset($_SESSION['num_rooms']))
     $_SESSION['num_rooms'] = (isset($_SESSION['book']['room'])) ? $_SESSION['book']['rooms'] : 0;
-    if(isset($_POST['num_adults'])) $_SESSION['num_adults'] = (int) preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['num_adults']);
-    if(isset($_POST['num_children'])) $_SESSION['num_children'] = (int) preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['num_children']);
-
+    if(isset($_POST['num_adults'])) echo $_SESSION['num_adults'] = (int) preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['num_adults']);
+    if(isset($_POST['num_children'])) echo $_SESSION['num_children'] = (int) preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['num_children']);
 $from_date = (isset($_SESSION['from_date'])) ? $_SESSION['from_date'] : '';
 $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
 <style>#myUL{
@@ -34,6 +32,28 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
     cursor:pointer;
 }#myUL > li > a{
     color:#000;
+}
+.room_modal {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    min-width: 390px !important;
+    height: auto;
+    background: #f2f2f2;
+    box-shadow: 1px 2px 5px #000;
+    z-index: 999;
+    color: #000;
+    display: none;
+}
+.pagination {
+    margin: 1px 2px;
+}
+.input-group-addon {
+    display: block;
+    width: 100%;
+}
+.room_full {
+    width: 100%;
 }
 </style>
 <form action="<?php echo DOCBASE.$sys_pages['booking']['alias']; ?>" method="post" class="booking-search">
@@ -110,35 +130,81 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
             </div>
             <div class="field-notice" rel="dates"></div>
         </div>
-        <div class="col-md-2 col-sm-6 col-xs-6">
+        <!-- <div class="col-md-2 col-sm-6 col-xs-6">
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon"><?php echo $texts['ADULTS']; ?></div>
                     <select name="num_adults" class="selectpicker form-control">
                     <option value="" disabled>Select Adults</option>
                         <?php
-                        for($i = 1; $i <= $max_adults_search; $i++){
-                            $select = ($_SESSION['num_adults'] == $i) ? ' selected=\"selected\"' : '';
-                            echo '<option value=\"'.$i.'\"'.$select.'>'.$i.'</option>';
-                        } ?>
+                        // for($i = 1; $i <= $max_adults_search; $i++){
+                        //     $select = ($_SESSION['num_adults'] == $i) ? ' selected=\"selected\"' : '';
+                        //     echo '<option value=\"'.$i.'\"'.$select.'>'.$i.'</option>';
+                        // } ?>
                     </select>
                 </div>
             </div>
-        </div>
+        </div> -->
         <?php // if(strpos($_SERVER['REQUEST_URI'], 'hotels') !== 1) { ?>
-        <div class="col-md-2 col-sm-6 col-xs-6">
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon"><?php echo $texts['CHILDREN']; ?></div>
-                    <select name="num_children" class="selectpicker form-control">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="form-group" style="position:relative">
+                <div class="input-group room_full">
+                    <div class="input-group-addon">ROOMS & GUESTS</div>
+                    <!-- <select name="num_children" class="selectpicker form-control">
                     <option value="" disabled>Select Childrens</option>
                         <?php
-                        for($i = 0; $i <= $max_rooms_search; $i++){
-                            $select = ($_SESSION['num_children'] == $i) ? ' selected=\"selected\"' : '';
-                            echo '<option value=\"'.$i.'\"'.$select.'>'.$i.'</option>';
-                        } ?>
-                    </select>
+                        // for($i = 0; $i <= $max_rooms_search; $i++){
+                        //     $select = ($_SESSION['num_children'] == $i) ? ' selected=\"selected\"' : '';
+                        //     echo '<option value=\"'.$i.'\"'.$select.'>'.$i.'</option>';
+                        // } ?>
+                    </select> -->
+                    <div id="room_modal" class="room_modal">
+                    <p class="text-bold text-default"><?php echo $texts['ADULTS']; ?> (12y+)</p>
+                        <nav aria-label="...">
+                            <input id="num_adults" type="hidden" name="num_adults" value="" />
+                            <ul id="adult_page" class="pagination">
+                            <?php
+                                for($i = 1; $i <= 10; $i++){
+                                    $select = ($_SESSION['num_adults'] == $i) ? 'active' : '';
+                                    echo '<li class="page-item '.$select.'"><a class="page-link" href="#">'.$i.'</a></li>';
+                                } ?>
+                                <!-- <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link">2</a></li>
+                                <li class="page-item"><a class="page-link">3</a></li>
+                                <li class="page-item"><a class="page-link">4</a></li>
+                                <li class="page-item"><a class="page-link">5</a></li>
+                                <li class="page-item"><a class="page-link">6</a></li>
+                                <li class="page-item"><a class="page-link">7</a></li>
+                                <li class="page-item"><a class="page-link">8</a></li>
+                                <li class="page-item"><a class="page-link">9</a></li>
+                                <li class="page-item"><a class="page-link">10</a></li> -->
+                            </ul>
+                        </nav>
+                        <p class="text-bold text-default"><?php echo $texts['CHILDREN']; ?> (1y-12y)</p>
+                        <nav aria-label="...">
+                        <input id="num_children" type="hidden" name="num_children" value="" />
+                            <ul id="children_page" class="pagination">
+                            <?php
+                                for($i = 0; $i <= 10; $i++){
+                                    $select = ($_SESSION['num_children'] == $i) ? 'active' : '';
+                                    echo '<li class="page-item '.$select.'"><a class="page-link" href="#">'.$i.'</a></li>';
+                                } ?>
+                                <!-- <li class="page-item active"><a class="page-link">0</a></li>
+                                <li class="page-item"><a class="page-link">1</a></li>
+                                <li class="page-item"><a class="page-link">2</a></li>
+                                <li class="page-item"><a class="page-link">3</a></li>
+                                <li class="page-item"><a class="page-link">4</a></li>
+                                <li class="page-item"><a class="page-link">5</a></li>
+                                <li class="page-item"><a class="page-link">6</a></li>
+                                <li class="page-item"><a class="page-link">7</a></li>
+                                <li class="page-item"><a class="page-link">8</a></li>
+                                <li class="page-item"><a class="page-link">9</a></li>
+                                <li class="page-item"><a class="page-link">10</a></li> -->
+                            </ul>
+                        </nav>
                     </div>
+                </div>
+
             </div>
         </div>
       <?php // } ?>
@@ -186,7 +252,6 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
         <?php
     } ?>
 </form>
-
 <script>
 function myFunction() {
     var input, filter, ul, li, a, i, txtValue,myUL;
@@ -198,7 +263,7 @@ function myFunction() {
 
     if(filter.length > 0){
 
-        document.getElementById("myUL").style.display = 'block';
+    document.getElementById("myUL").style.display = 'block';
     ul = document.getElementById("myUL");
     li = ul.getElementsByTagName("li");
     for (i = 0; i < li.length; i++) {
@@ -213,8 +278,6 @@ function myFunction() {
 }else {
     document.getElementById("myUL").style.display = 'none';
 }
-
-
 }
 
 function  setdestination(v){
@@ -225,4 +288,25 @@ function  setdestination(v){
 function selCity(){
     document.getElementById("destination_id").style.display = "block";
 }
+var show = false;
+$(document).ready(function(){
+    $('.room_full').click(function(e){
+        $('#room_modal').css('display', 'block');
+        show = true;
+        e.stopPropagation();
+    });
+    $('body').click(function(e) {
+        if(show) $('#room_modal').css('display', 'none');
+    });
+    $("#adult_page li").click(function(e){
+        $('#adult_page').find('li').removeClass("active");
+        $(e.currentTarget).addClass("active");
+        $('#num_adults').val($(e.currentTarget).find('a').html());
+    })
+    $("#children_page li").click(function(e){
+        $('#children_page').find('li').removeClass("active");
+        $(e.currentTarget).addClass("active");
+        $('#num_children').val($(e.currentTarget).find('a').html());
+    })
+})
 </script>

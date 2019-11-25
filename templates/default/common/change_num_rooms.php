@@ -3,7 +3,6 @@ require_once('../../../common/lib.php');
 require_once('../../../common/define.php');
 require_once('functions.php');
 $response = array('html' => '', 'notices' => array(), 'error' => '', 'success' => '', 'extraHtml' => '');
-
 $response['extraHtml'] = getBookingSummary();
 
 if(isset($db) && $db !== false){
@@ -61,4 +60,4 @@ if(isset($db) && $db !== false){
         }
     }
 }
-// echo json_encode($response);
+echo json_encode($response);
