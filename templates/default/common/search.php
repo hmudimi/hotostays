@@ -145,7 +145,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
                 </div>
             </div>
         </div> -->
-        <?php // if(strpos($_SERVER['REQUEST_URI'], 'hotels') !== 1) { ?>
+        <?php  if(strpos($_SERVER['REQUEST_URI'], '/') !== 1) { ?>
         <div class="col-md-4 col-sm-12 col-xs-12">
             <div class="form-group" style="position:relative">
                 <div class="input-group room_full">
@@ -207,7 +207,7 @@ $to_date = (isset($_SESSION['to_date'])) ? $_SESSION['to_date'] : ''; ?>
 
             </div>
         </div>
-      <?php // } ?>
+      <?php  } ?>
         <div class="col-md-1 col-sm-12 col-xs-12">
             <div class="form-group">
                 <button class="myButton" type="submit" name="check_availabilities">Search..</button>
